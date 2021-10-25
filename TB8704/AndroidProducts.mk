@@ -16,3 +16,7 @@
 
 PRODUCT_MAKEFILES := \
     $(LOCAL_DIR)/lineage_TB8704.mk
+
+COMMON_LUNCH_CHOICES := \
+	lineage_TB8704-userdebug \
+	lineage_TB8704-user
