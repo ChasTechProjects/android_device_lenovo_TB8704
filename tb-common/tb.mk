@@ -51,11 +51,13 @@ PRODUCT_PACKAGES += \
     android.hardware.audio@2.0-service \
     android.hardware.audio@4.0 \
     android.hardware.audio@5.0-impl \
+	android.hardware.audio@6.0-impl:32 \
     android.hardware.audio.common@4.0 \
     android.hardware.audio.common@4.0-util \
     android.hardware.audio.effect@2.0-impl \
     android.hardware.audio.effect@4.0 \
     android.hardware.audio.effect@5.0-impl \
+	android.hardware.audio.effect@6.0-impl:32 \
     android.hardware.bluetooth.audio@2.0-impl \
     android.hardware.soundtrigger@2.2-impl
 
@@ -102,7 +104,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
     dalvik.vm.heaptargetutilization=0.75 \
     dalvik.vm.heapminfree=2m \
     dalvik.vm.heapmaxfree=8m
-
+	
 # Deunify script
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/prebuilt/bin/deunify.sh:install/bin/deunify.sh
@@ -125,11 +127,15 @@ PRODUCT_PACKAGES += \
     android.hardware.memtrack@1.0-impl \
     android.hardware.memtrack@1.0-service
 
+# DPM
+PRODUCT_PACKAGES += \
+    libshim_dpmframework
+
 # DRM
 PRODUCT_PACKAGES += \
-    android.hardware.drm@1.0-impl \
+    android.hardware.drm@1.0-impl:64 \
     android.hardware.drm@1.0-service \
-    android.hardware.drm@1.2-service.clearkey
+    android.hardware.drm@1.3-service.clearkey
 
 # FM
 PRODUCT_PACKAGES += \
@@ -151,6 +157,7 @@ PRODUCT_PACKAGES += \
     libgnsspps \
     libsensorndkbridge
 
+# GNSS
 PRODUCT_PACKAGES += \
     android.hardware.gnss@1.0-impl-qti \
     android.hardware.gnss@1.0-service-qti
@@ -167,6 +174,13 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGES += \
     android.hardware.health@2.0-impl \
     android.hardware.health@2.0-service
+
+# HIDL
+PRODUCT_PACKAGES += \
+    libhidltransport \
+    libhidltransport.vendor \
+    libhwbinder \
+    libhwbinder.vendor
 
 # IMS
 PRODUCT_PACKAGES += \
@@ -191,7 +205,9 @@ PRODUCT_PACKAGES += \
     android.hardware.keymaster@3.0-impl \
     android.hardware.keymaster@3.0-service
 
+# Lights
 PRODUCT_PACKAGES += \
+    lights.msm8953 \
     android.hardware.light@2.0-impl \
     android.hardware.light@2.0-service
 
@@ -214,10 +230,6 @@ PRODUCT_PACKAGES += \
     libandroid_net \
     libnl \
     netutils-wrapper-1.0
-
-# Lights
-PRODUCT_PACKAGES += \
-    lights.msm8953
 
 # OMX
 PRODUCT_PACKAGES += \
@@ -263,7 +275,8 @@ PRODUCT_COPY_FILES += \
 
 # Power
 PRODUCT_PACKAGES += \
-    android.hardware.power@1.2-service-qti
+    android.hardware.power-service-qti \
+    android.hardware.power.stats@1.0-service.mock
 
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/powerhint.xml:$(TARGET_COPY_OUT_VENDOR)/etc/powerhint.xml \
@@ -347,11 +360,15 @@ PRODUCT_PACKAGES += \
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.lineage.build.vendor_security_patch=2018-10-01
 
+PRODUCT_COPY_FILES += \
+    prebuilts/vndk/v29/arm64/arch-arm64-armv8-a/shared/vndk-core/libprotobuf-cpp-lite.so:$(TARGET_COPY_OUT_VENDOR)/lib64/libprotobuf-cpp-lite-v29.so \
+    prebuilts/vndk/v29/arm64/arch-arm64-armv8-a/shared/vndk-core/libprotobuf-cpp-full.so:$(TARGET_COPY_OUT_VENDOR)/lib64/libprotobuf-cpp-full-v29.so
+
 # Vibrator
 PRODUCT_PACKAGES += \
     android.hardware.vibrator@1.0-impl \
-    android.hardware.vibrator@1.0-service
-
+    android.hardware.vibrator@1.0-service \
+    android.hardware.vibrator@1.3
 # WiFi
 PRODUCT_PACKAGES += \
     libqsap_sdk \
@@ -360,6 +377,7 @@ PRODUCT_PACKAGES += \
 
 PRODUCT_PACKAGES += \
     hostapd \
+    WifiOverlay \
     wpa_supplicant \
     wpa_supplicant.conf
 
