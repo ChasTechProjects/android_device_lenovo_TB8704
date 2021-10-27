@@ -2,6 +2,7 @@
 OLD_LOCAL_PATH := $(LOCAL_PATH)
 MM_JPEG_TEST_PATH := $(call my-dir)
 
+include $(LOCAL_PATH)/../../common.mk
 include $(CLEAR_VARS)
 LOCAL_PATH := $(MM_JPEG_TEST_PATH)
 LOCAL_MODULE_TAGS := optional

@@ -32,7 +32,6 @@
 #include <stdlib.h>
 #include <errno.h>
 #include <string.h>
-#include <unistd.h>
 
 // Camera dependencies
 #include "mm_camera_dbg.h"

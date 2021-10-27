@@ -1,17 +1,8 @@
-# Enable SDLLVM compiler option for build flavour >= N flavour
-PLATFORM_SDK_NPDK = 24
-ENABLE_CAM_SDLLVM  := $(shell if [ $(PLATFORM_SDK_VERSION) -ge $(PLATFORM_SDK_NPDK) ] ; then echo true ; else echo false ; fi)
-ifeq ($(ENABLE_CAM_SDLLVM),true)
-SDCLANGSAVE := $(SDCLANG)
-SDCLANG := true
-endif
-
 ifneq (,$(filter $(TARGET_ARCH), arm arm64))
 
 LOCAL_PATH:= $(call my-dir)
 
 include $(CLEAR_VARS)
-
 LOCAL_HEADER_LIBRARIES += display_headers
 LOCAL_COPY_HEADERS_TO := qcom/camera
 LOCAL_COPY_HEADERS := QCameraFormat.h
@@ -22,7 +13,6 @@ LOCAL_SRC_FILES := \
         util/QCameraFlash.cpp \
         util/QCameraPerf.cpp \
         util/QCameraQueue.cpp \
-        util/QCameraDisplay.cpp \
         util/QCameraCommon.cpp \
         QCamera2Hal.cpp \
         QCamera2Factory.cpp
@@ -56,6 +46,7 @@ LOCAL_SRC_FILES += \
         HAL/QCameraPostProc.cpp \
         HAL/QCamera2HWICallbacks.cpp \
         HAL/QCameraParameters.cpp \
+        HAL/CameraParameters.cpp \
         HAL/QCameraParametersIntf.cpp \
         HAL/QCameraThermalAdapter.cpp
 endif
@@ -101,7 +92,8 @@ LOCAL_C_INCLUDES += \
         $(LOCAL_PATH)/HAL
 
 ifeq ($(TARGET_COMPILE_WITH_MSM_KERNEL),true)
-LOCAL_HEADER_LIBRARIES := generated_kernel_headers
+LOCAL_C_INCLUDES += $(TARGET_OUT_INTERMEDIATES)/KERNEL_OBJ/usr/include
+LOCAL_ADDITIONAL_DEPENDENCIES := $(TARGET_OUT_INTERMEDIATES)/KERNEL_OBJ/usr
 endif
 ifeq ($(TARGET_TS_MAKEUP),true)
 LOCAL_CFLAGS += -DTARGET_TS_MAKEUP
@@ -120,18 +112,13 @@ LOCAL_C_INCLUDES += \
         $(TARGET_OUT_HEADERS)/qcom/display
 LOCAL_C_INCLUDES += \
         $(call project-path-for,qcom-display)/libqservice
-LOCAL_SHARED_LIBRARIES := liblog libhardware libutils libcutils libdl libsync libgui
+LOCAL_SHARED_LIBRARIES := liblog libhardware libutils libcutils libdl libsync
 LOCAL_SHARED_LIBRARIES += libmmcamera_interface libmmjpeg_interface libui libcamera_metadata
 LOCAL_SHARED_LIBRARIES += libqdMetaData libqservice libbinder
-ifeq ($(USE_DISPLAY_SERVICE),true)
-LOCAL_SHARED_LIBRARIES += android.frameworks.displayservice@1.0 libhidlbase libhidltransport
-else
-LOCAL_SHARED_LIBRARIES += libgui
-endif
+LOCAL_SHARED_LIBRARIES += libcutils libdl
 ifeq ($(TARGET_TS_MAKEUP),true)
 LOCAL_SHARED_LIBRARIES += libts_face_beautify_hal libts_detected_face_hal
 endif
-LOCAL_HEADER_LIBRARIES += media_plugin_headers
 
 LOCAL_STATIC_LIBRARIES := android.hardware.camera.common@1.0-helper
 
@@ -145,8 +132,5 @@ LOCAL_32_BIT_ONLY := $(BOARD_QTI_CAMERA_32BIT_ONLY)
 include $(BUILD_SHARED_LIBRARY)
 
 include $(call first-makefiles-under,$(LOCAL_PATH))
-endif
-ifeq ($(ENABLE_CAM_SDLLVM),true)
-SDCLANG := $(SDCLANGSAVE)
 endif
 
