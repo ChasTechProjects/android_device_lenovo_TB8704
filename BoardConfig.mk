@@ -162,7 +162,7 @@ TARGET_RECOVERY_DEVICE_MODULES := libinit_lenovo_tb8704
 BOARD_KERNEL_BASE := 0x80000000
 BOARD_KERNEL_CMDLINE := console=null androidboot.hardware=qcom msm_rtb.filter=0x237 ehci-hcd.park=3
 BOARD_KERNEL_CMDLINE += lpm_levels.sleep_disabled=1 androidboot.bootdevice=7824900.sdhci loop.max_part=7
-BOARD_KERNEL_CMDLINE += androidboot.selinux=permissive
+#BOARD_KERNEL_CMDLINE += androidboot.selinux=permissive
 BOARD_KERNEL_IMAGE_NAME := Image.gz-dtb
 BOARD_KERNEL_OFFSET = 0x00008000
 BOARD_KERNEL_PAGESIZE := 2048
@@ -211,14 +211,11 @@ SELINUX_IGNORE_NEVERALLOWS := true
 
 include device/qcom/sepolicy-legacy-um/SEPolicy.mk
 
-BOARD_SEPOLICY_DIRS += \
-    $(DEVICE_PATH)/sepolicy
+BOARD_SEPOLICY_DIRS += $(DEVICE_PATH)/sepolicy
 
-BOARD_PLAT_PUBLIC_SEPOLICY_DIR += \
-    $(DEVICE_PATH)/sepolicy/public
+BOARD_PLAT_PUBLIC_SEPOLICY_DIR += $(DEVICE_PATH)/sepolicy/public
 
-BOARD_PLAT_PRIVATE_SEPOLICY_DIR += \
-    $(DEVICE_PATH)/sepolicy/private
+BOARD_PLAT_PRIVATE_SEPOLICY_DIR += $(DEVICE_PATH)/sepolicy/private
 
 # Qualcomm support
 BOARD_USES_QCOM_HARDWARE := true
